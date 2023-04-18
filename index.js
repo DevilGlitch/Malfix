@@ -34,7 +34,7 @@ const commands = [
 
 const rest = new REST({ version: '9' }).setToken(token);
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: 7796 });
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}`);
