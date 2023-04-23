@@ -21,13 +21,13 @@ const commands = [
       {
         name: 'user',
         description: 'The user to kick',
-        type: '6',
+        type: 6,
         required: true,
       },
       {
         name: 'reason',
         description: 'The reason for kicking the user',
-        type: '3',
+        type: 3,
         required: false,
       },
     ],
@@ -39,7 +39,7 @@ const commands = [
       {
         name: 'link',
         description: 'The invite link',
-        type: '3',
+        type: 3,
         required: true,
       },
     ],
