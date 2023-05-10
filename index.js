@@ -10,6 +10,9 @@ const pfx = '>'
 const guildIds = process.env.GUILD_IDS.split(',');
 const applicationId = process.env.APPLICATION_ID;
 
+
+// ============================================={ DEFINING COMMANDS }=============================================
+
 const commands = [
   {
     name: 'ping',
@@ -48,8 +51,9 @@ const commands = [
 ];
 
 const rest = new REST({ version: '9' }).setToken(token);
-
 const client = new Client({ intents: 7796 });
+
+// ============================================={ ON LOGIN }=============================================
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}`);
@@ -69,6 +73,8 @@ client.once('ready', async () => {
     console.error(error);
   }
 });
+
+// ============================================={ IF A MESSAGE IS SENT }=============================================
 
 client.on('messageCreate', async (message) => {
   // Check if the message is in the desired channel and server
@@ -97,6 +103,34 @@ client.on('messageCreate', async (message) => {
     console.log(`Received message in target channel: ${message.content}`);
   }
 }); // <-- Add a closing parenthesis here
+
+// ============================================={ PREFIX CMDS }=============================================
+
+client.on('messageCreate', async (message) => {
+  // Check if the message starts with the prefix and is not sent by a bot
+  if (!message.content.startsWith('>')) return;
+  if (message.author.bot) return;
+
+  // Remove the prefix and split the message into command and arguments
+  const args = message.content.slice(1).trim().split(/ +/);
+  const command = args.shift().toLowerCase();
+
+  // Check the command and execute the corresponding action
+  if (command === 'ping') {
+    message.reply('Pong!');
+  } else if (command === 'say') {
+    const text = args.join(' ');
+    message.channel.send(text);
+  } else if (command === 'avatar') {
+    const user = message.mentions.users.first() || message.author;
+    const avatarURL = user.displayAvatarURL({ dynamic: true, size: 4096 });
+    message.channel.send(`Avatar of ${user.username}: ${avatarURL}`);
+  } else {
+    message.channel.send('Unknown command. Type `>help` for a list of available commands.');
+  }
+});
+
+// ============================================={ SLASH COMMANDS }=============================================
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
